@@ -1,0 +1,36 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ block "title" . }}ИСУ гостиница{{ end }}</title>
+
+    <!-- общий CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <nav class="main-nav">
+        <!-- логотип / ссылка-домой -->
+        <a class="brand" href="/">ИСУ гостиница</a>
+
+        <!-- навигация -->
+        <div class="nav-links">
+            <a href="/rooms">Номера</a>
+            <a href="/bookings">Бронирования</a>
+            <a href="/guests">Гости</a> 
+        </div>
+    </nav>
+</header>
+
+<main>
+    {{ block "content" . }}{{ end }}
+</main>
+
+<!-- единственный JS-файл, содержащий сортировку таблиц -->
+<script src="/static/main.js"></script>
+</body>
+</html>
+{{ end }}

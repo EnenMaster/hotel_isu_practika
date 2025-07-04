@@ -1,0 +1,50 @@
+{{define "title"}}{{if .Room.RoomID}}Редактировать номер{{else}}Новый номер{{end}}{{end}}
+
+{{define "content"}}
+<h1>{{if .Room.RoomID}}Редактировать номер{{else}}Новый номер{{end}}</h1>
+
+<form method="POST" action="/rooms{{if .Room.RoomID}}/edit{{end}}">
+    {{ .csrfField }}            <!-- CSRF -->
+
+    {{if .Room.RoomID}}
+        <input type="hidden" name="RoomID" value="{{.Room.RoomID}}">
+    {{end}}
+
+    <label for="RoomType">Тип:</label>
+    <select name="RoomType" id="RoomType" required>
+        <option value="Single" {{if eq .Room.RoomType "Single"}}selected{{end}}>Single</option>
+        <option value="Double" {{if eq .Room.RoomType "Double"}}selected{{end}}>Double</option>
+        <option value="Suite" {{if eq .Room.RoomType "Suite"}}selected{{end}}>Suite</option>
+    </select>
+    <br>
+
+    <label for="Status">Статус:</label>
+    <select name="Status" id="Status" required>
+        <option value="available" {{if eq .Room.Status "available"}}selected{{end}}>Свободен</option>
+        <option value="occupied" {{if eq .Room.Status "occupied"}}selected{{end}}>Занят</option>
+    </select>
+    <br>
+
+ <label for="Price">Цена:</label>
+<select name="Price" id="Price" required>
+    <option value="2500" {{if eq .Price 2500}}selected{{end}}>2500.00 ₽</option>
+    <option value="5000" {{if eq .Price 5000}}selected{{end}}>5000.00 ₽</option>
+    <option value="7500" {{if eq .Price 7500}}selected{{end}}>7500.00 ₽</option>
+</select>
+    <br>
+
+    <label for="Category">Категория:</label>
+    <select name="Category" id="Category" required>
+        <option value="economy" {{if eq .Room.Category "economy"}}selected{{end}}>Эконом</option>
+        <option value="standard" {{if eq .Room.Category "standard"}}selected{{end}}>Стандарт</option>
+        <option value="comfort" {{if eq .Room.Category "comfort"}}selected{{end}}>Комфорт</option>
+    </select>
+    <br>
+
+     <button type="submit">Сохранить</button>
+</form>
+
+<a href="/rooms">Назад</a>
+{{end}}
+
+

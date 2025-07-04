@@ -1,0 +1,169 @@
+/* ——— БАЗОВАЯ ТИПОГРАФИКА И ФОН ——— */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+body {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    background: #f4f7fa;
+    margin: 0;
+    padding: 0;
+    color: #222;
+}
+
+/* ——— ШАПКА С НАВИГАЦИЕЙ ——— */
+.site-header {
+    background: #f4f7fa;
+    padding: 12px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04);
+}
+
+.main-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    font-size: 1.35rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #1f3c77;
+}
+
+.nav-links {
+    display: flex;
+    gap: 12px;
+}
+
+.nav-links a {
+    padding: 6px 16px;
+    border: 1px solid #1f3c77;
+    border-radius: 6px;
+    background: #fff;
+    color: #1f3c77;
+    text-decoration: none;
+    transition: all .2s;
+    font-size: .95rem;
+}
+
+.nav-links a:hover {
+    background: #1f3c77;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+
+/* ——— ЗАГОЛОВКИ ——— */
+h1 {
+    margin-top: 30px;
+    color: #3d5875;
+    text-align: center;
+}
+
+/* ——— ТАБЛИЦЫ ——— */
+table {
+    width: 80%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 4px 16px #0001;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #e5e9f2;
+    text-align: left;
+}
+
+th {
+    background: #3d5875;
+    color: #fff;
+    font-weight: 600;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* ——— ССЫЛКИ ——— */
+a {
+    color: #2d81ff;
+    text-decoration: none;
+    margin-right: 16px;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #174fa3;
+}
+
+/* ——— КНОПКА «ДОБАВИТЬ НОМЕР» ——— */
+.add-room-btn {
+    display: inline-block;
+    margin: 24px auto 0 10%;
+    padding: 10px 18px;
+    background: #2d81ff;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: 0 2px 8px #0002;
+    transition: background 0.2s;
+}
+
+.add-room-btn:hover {
+    background: #174fa3;
+}
+
+/* ——— ФОРМЫ ——— */
+form {
+    max-width: 400px;
+    margin: 32px auto 0;
+    padding: 24px 32px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px #0001;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+input, select, textarea, button[type="submit"] {
+    padding: 8px 12px;
+    border: 1px solid #bcc7dd;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid #2d81ff44;
+}
+
+button[type="submit"] {
+    background: #2d81ff;
+    color: #fff;
+    border: none;
+    margin-top: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px #0002;
+    transition: background 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: #174fa3;
+}
+
+/* ——— ОШИБКИ ——— */
+.error {
+    color: #d33;
+    margin-top: 8px;
+}

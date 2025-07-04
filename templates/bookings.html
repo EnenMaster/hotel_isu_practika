@@ -1,0 +1,40 @@
+{{ define "title" }}Бронирования{{ end }}
+
+{{ define "content" }}
+<h1>Список бронирований</h1>
+
+<a href="/bookings/add" class="add-room-btn">Новое бронирование</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th><th>Гость</th><th>Номер</th>
+            <th>Дата заезда</th><th>Дата выезда</th>
+            <th>Статус</th><th>Оплата</th><th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{ range .Bookings }}
+        <tr>
+            <td>{{ .BookingID }}</td>
+            <td>{{ .GuestName }}</td>
+            <td>{{ .RoomID }}</td>
+            <td>{{ .CheckIn.Format "02.01.2006" }}</td>
+            <td>{{ .CheckOut.Format "02.01.2006" }}</td>
+            <td>{{ .Status }}</td>
+            <td>{{ if .Paid }}Оплачено{{ else }}Нет{{ end }}</td>
+            <td>
+                {{ if .Paid }}
+                    —
+                {{ else }}
+                    <a href="/bookings/pay/{{ .BookingID }}">Оплатить</a>
+                {{ end }}
+            </td>
+        </tr>
+    {{ end }}
+    {{ if not .Bookings }}
+        <tr><td colspan="8" style="text-align:center;">Нет бронирований</td></tr>
+    {{ end }}
+    </tbody>
+</table>
+{{ end }}

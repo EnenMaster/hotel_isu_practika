@@ -1,0 +1,34 @@
+{{ define "title" }}Список номеров{{ end }}
+
+{{ define "content" }}
+<h1>Список номеров</h1>
+
+<a href="/rooms/add" class="add-room-btn">Добавить номер</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Тип</th><th>Статус</th>
+      <th>Цена</th><th>Категория</th><th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{ range .Rooms }}
+    <tr>
+      <td>{{ .RoomID }}</td>
+      <td>{{ .RoomType }}</td>
+      <td>{{ .Status }}</td>
+      <td>{{ printf "%.2f ₽" .Price }}</td>
+      <td>{{ .Category }}</td>
+      <td>
+        <a href="/rooms/edit/{{ .RoomID }}">Редактировать</a>
+        <a href="/rooms/delete/{{ .RoomID }}">Удалить</a>
+      </td>
+    </tr>
+  {{ end }}
+  {{ if not .Rooms }}
+    <tr><td colspan="6" style="text-align:center;">Нет номеров</td></tr>
+  {{ end }}
+  </tbody>
+</table>
+{{ end }}

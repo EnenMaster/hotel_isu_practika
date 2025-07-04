@@ -1,0 +1,13 @@
+{{define "content"}}
+<h2>Пользователи</h2>
+<table>
+    <tr><th>ID</th><th>Email</th><th>Role</th></tr>
+    {{range .}}
+    <tr>
+        <td>{{.UserID}}</td>
+        <td>{{.Email}}</td>
+        <td>{{.Role}}</td>
+    </tr>
+    {{end}}
+</table>
+{{end}}
