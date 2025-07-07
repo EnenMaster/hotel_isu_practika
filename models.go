@@ -28,7 +28,7 @@ type Booking struct {
     GuestID     int
     CheckIn     time.Time
     CheckOut    time.Time
-    TotalAmount float64    // <<< добавить это поле!
+    TotalAmount float64   
     Paid        bool
     Status      string
 }

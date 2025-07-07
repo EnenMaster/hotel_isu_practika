@@ -25,7 +25,7 @@ func roomsListHandler(w http.ResponseWriter, r *http.Request) {
 
     data := map[string]interface{}{
         "Rooms":   rooms,
-        "IsAdmin": auth.Is(r, "admin"),  // ← добавили
+        "IsAdmin": auth.Is(r, "admin"),  
     }
 
     renderTemplate(w, r, data,
@@ -94,7 +94,7 @@ func roomEditHandler(w http.ResponseWriter, r *http.Request) {
 func roomDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/rooms/delete/"))
 
-	// блокируем удаление, если есть бронирования
+	
 	var cnt int
 	if err := db.QueryRow(`SELECT COUNT(*) FROM bookings WHERE room_id=$1`, id).Scan(&cnt); err != nil {
 		http.Error(w, "Ошибка проверки бронирований", 500)
@@ -194,16 +194,25 @@ func guestDeleteHandler(w http.ResponseWriter, r *http.Request) {
 // ---------- БРОНИРОВАНИЯ ---------------------------------------------
 
 func bookingAddHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		guests, _ := GetGuests()
-		rooms, _  := GetRooms()
-		renderTemplate(w, r, map[string]interface{}{
-			"Booking": Booking{},
-			"Guests":  guests,
-			"Rooms":   rooms,
-		}, "templates/base.html", "templates/booking_edit.html")
-		return
-	}
+    if r.Method == http.MethodGet {
+        guests, _ := GetGuests()
+        rooms, _  := GetRooms()
+
+        // Инициализируем «сегодня» и «завтра»
+        now := time.Now()
+        newBooking := Booking{
+            CheckIn:  now,
+            CheckOut: now.Add(24 * time.Hour),
+        }
+
+        renderTemplate(w, r, map[string]interface{}{
+            "Booking":   newBooking,
+            "Guests":    guests,
+            "Rooms":     rooms,
+            "csrfField": csrf.TemplateField(r), 
+        }, "templates/base.html", "templates/booking_edit.html")
+        return
+    }
 
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "Ошибка формы", 400)
@@ -264,7 +273,7 @@ func bookingsListHandler(w http.ResponseWriter, r *http.Request) {
     // 3. передаём их в шаблон
     data := map[string]interface{}{
         "Bookings": bookings,
-        "Filter":   filter,                 // ← переменная существует
+        "Filter":   filter,                 
         "IsAdmin":  auth.Is(r, "admin"),
     }
 
@@ -361,7 +370,7 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
     renderTemplate(w, r,
         map[string]interface{}{
             "Users":   list,
-            "IsAdmin": true,           // это раздел админа
+            "IsAdmin": true,           
         },
         "templates/base.html",
         "templates/users.html")

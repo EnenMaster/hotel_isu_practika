@@ -9,7 +9,7 @@ import (
 	"gohotel/internal/auth"
 	"gohotel/internal/logging"
 
-	_ "github.com/joho/godotenv/autoload" // .env → ENV
+	_ "github.com/joho/godotenv/autoload" 
 	"github.com/gorilla/csrf"
 	_ "github.com/lib/pq"
 
@@ -58,9 +58,9 @@ func main() {
 	//--------------------------------------------------------------------
 	// 3.  CSRF-middleware
 	//--------------------------------------------------------------------
-	csrfKey := os.Getenv("CSRF_AUTH_KEY")          // 💡 читаем ключ
+	csrfKey := os.Getenv("CSRF_AUTH_KEY")          
 if len(csrfKey) == 0 {
-    log.Fatal("CSRF_AUTH_KEY не задан в .env") // или падаем
+    log.Fatal("CSRF_AUTH_KEY не задан в .env") 
 }
 
 csrfProt := csrf.Protect(
@@ -100,6 +100,7 @@ csrfProt := csrf.Protect(
 	mux.Handle("/rooms/delete/",   authOnly(http.HandlerFunc(roomDeleteHandler)))
 
 	mux.Handle("/guests",          authOnly(http.HandlerFunc(guestsListHandler)))
+	mux.HandleFunc("/guests/add",  guestAddHandler)  
 	mux.Handle("/guests/edit/",    authOnly(http.HandlerFunc(guestEditHandler)))
 	mux.Handle("/guests/delete/",  authOnly(http.HandlerFunc(guestDeleteHandler)))
 

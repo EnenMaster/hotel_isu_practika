@@ -1,27 +1,30 @@
-{{define "title"}}{{if .Guest.GuestID}}Редактировать гостя{{else}}Новый гость{{end}}{{end}}
+{{ define "title" }}{{ if .Guest.GuestID }}Редактировать гостя{{ else }}Новый гость{{ end }}{{ end }}
 
-{{define "content"}}
-<h1>{{if .Guest.GuestID}}Редактировать гостя{{else}}Новый гость{{end}}</h1>
+{{ define "content" }}
+<h1>{{ if .Guest.GuestID }}Редактировать гостя{{ else }}Новый гость{{ end }}</h1>
 
-<form method="POST" action="/guests{{if .Guest.GuestID}}/edit{{end}}">
-    {{ .csrfField }}            <!-- CSRF -->
+<form method="post"
+      action="{{ if .Guest.GuestID }}/guests/edit/{{ .Guest.GuestID }}{{ else }}/guests/add{{ end }}">
+    {{ .csrfField }}
 
-    {{if .Guest.GuestID}}
-        <input type="hidden" name="GuestID" value="{{.Guest.GuestID}}">
-    {{end}}
+    {{ if .Guest.GuestID }}
+        <input type="hidden" name="GuestID" value="{{ .Guest.GuestID }}">
+    {{ end }}
 
-    <label for="Name">Имя:</label>
-    <input name="Name" id="Name" value="{{.Guest.Name}}" required><br>
+    <label for="Name">ФИО:</label>
+    <input name="Name" id="Name" value="{{ .Guest.Name }}" required><br>
 
     <label for="Email">Email:</label>
-    <input name="Email" id="Email" value="{{.Guest.Email}}"><br>
+    <input name="Email" id="Email" value="{{ .Guest.Email }}"><br>
 
     <label for="Phone">Телефон:</label>
-    <input name="Phone" id="Phone" value="{{.Guest.Phone}}"><br>
+    <input name="Phone" id="Phone" value="{{ .Guest.Phone }}"><br>
 
     <button type="submit">Сохранить</button>
 </form>
+
 <br>
 <a href="/guests" class="add-room-btn">Назад к списку</a>
-{{end}}
+{{ end }}
+
 

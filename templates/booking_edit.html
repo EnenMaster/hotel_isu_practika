@@ -1,54 +1,70 @@
-{{define "title"}}{{if .Booking.BookingID}}Редактировать бронирование{{else}}Новое бронирование{{end}}{{end}}
+{{ define "title" }}
+  {{ if .Booking.BookingID }}Редактировать бронирование{{ else }}Новое бронирование{{ end }}
+{{ end }}
 
-{{define "content"}}
-<h1>{{if .Booking.BookingID}}Редактировать бронирование{{else}}Новое бронирование{{end}}</h1>
+{{ define "content" }}
+<h1>{{ if .Booking.BookingID }}Редактировать бронирование{{ else }}Новое бронирование{{ end }}</h1>
 
-<form method="POST" action="/bookings{{if .Booking.BookingID}}/edit{{end}}">
-    {{ .csrfField }}            <!-- CSRF -->
+<form method="POST" action="/bookings{{ if .Booking.BookingID }}/edit{{ else }}/add{{ end }}">
+    {{ .csrfField }}
 
-    {{if .Booking.BookingID}}
+    {{ if .Booking.BookingID }}
         <label for="BookingID">ID:</label>
-        <input name="BookingID" id="BookingID" value="{{.Booking.BookingID}}" readonly><br>
-    {{end}}
+        <input name="BookingID" id="BookingID" value="{{ .Booking.BookingID }}" readonly><br>
+    {{ end }}
 
     <label for="RoomID">Номер:</label>
     <select name="RoomID" id="RoomID" required>
-        {{range .Rooms}}
-            <option value="{{.RoomID}}" {{if eq $.Booking.RoomID .RoomID}}selected{{end}}>{{.RoomType}} (ID:{{.RoomID}})</option>
-        {{end}}
+        {{ range .Rooms }}
+            <option value="{{ .RoomID }}" {{ if eq $.Booking.RoomID .RoomID }}selected{{ end }}>
+              {{ .RoomType }} (ID:{{ .RoomID }})
+            </option>
+        {{ end }}
     </select><br>
 
     <label for="GuestID">Гость:</label>
     <select name="GuestID" id="GuestID" required>
-        {{range .Guests}}
-            <option value="{{.GuestID}}" {{if eq $.Booking.GuestID .GuestID}}selected{{end}}>{{.Name}}</option>
-        {{end}}
+        {{ range .Guests }}
+            <option value="{{ .GuestID }}" {{ if eq $.Booking.GuestID .GuestID }}selected{{ end }}>
+              {{ .Name }}
+            </option>
+        {{ end }}
     </select><br>
 
     <label for="CheckIn">Дата заезда:</label>
-    <input type="date" name="CheckIn" id="CheckIn" value="{{.Booking.CheckIn.Format "2006-01-02"}}" required><br>
+    <input
+      type="date"
+      name="CheckIn"
+      id="CheckIn"
+      required
+      value="{{ .Booking.CheckIn.Format "2006-01-02" }}"
+    ><br>
 
     <label for="CheckOut">Дата выезда:</label>
-    <input type="date" name="CheckOut" id="CheckOut" value="{{.Booking.CheckOut.Format "2006-01-02"}}" required><br>
+    <input
+      type="date"
+      name="CheckOut"
+      id="CheckOut"
+      required
+      value="{{ .Booking.CheckOut.Format "2006-01-02" }}"
+    ><br>
 
     <label for="Paid">Оплачено:</label>
     <select name="Paid" id="Paid">
-        <option value="false" {{if not .Booking.Paid}}selected{{end}}>Нет</option>
-        <option value="true" {{if .Booking.Paid}}selected{{end}}>Да</option>
+        <option value="false" {{ if not .Booking.Paid }}selected{{ end }}>Нет</option>
+        <option value="true"  {{ if .Booking.Paid }}selected{{ end }}>Да</option>
     </select><br>
 
     <label for="Status">Статус:</label>
     <select name="Status" id="Status">
-        <option value="created" {{if eq .Booking.Status "created"}}selected{{end}}>Создано</option>
-        <option value="cancelled" {{if eq .Booking.Status "cancelled"}}selected{{end}}>Отменено</option>
-        <option value="completed" {{if eq .Booking.Status "completed"}}selected{{end}}>Завершено</option>
+        <option value="created"   {{ if eq .Booking.Status "created" }}selected{{ end }}>Создано</option>
+        <option value="cancelled" {{ if eq .Booking.Status "cancelled" }}selected{{ end }}>Отменено</option>
+        <option value="completed" {{ if eq .Booking.Status "completed" }}selected{{ end }}>Завершено</option>
     </select><br>
 
-   <button type="submit">Сохранить</button>
+    <button type="submit">Сохранить</button>
 </form>
 
-<br><a href="/bookings" class="add-room-btn">Назад к списку</a>
-{{end}}
-   
-
-
+<br>
+<a href="/bookings" class="add-room-btn">Назад к списку</a>
+{{ end }}

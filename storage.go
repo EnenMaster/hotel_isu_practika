@@ -55,7 +55,7 @@ func DeleteRoom(id int) error {
 func GetGuestByID(id int) (Guest, error) {
 	var g Guest
 	err := db.QueryRow(`
-	    SELECT guest_id, name, email, phone
+	    SELECT stgue_id, name, email, phone
 	    FROM   guests WHERE guest_id = $1`, id).
 		Scan(&g.GuestID, &g.Name, &g.Email, &g.Phone)
 	return g, err
@@ -242,41 +242,55 @@ func loginForm(w http.ResponseWriter, r *http.Request, msg string) {
 // ---------------------------------------------------------------------
 
 func GetAllBookingsFiltered(f BookingFilter) ([]BookingView, error) {
-	query := `SELECT booking_id, guest_name, room_id, room_type,
-	                 check_in, check_out, status, paid
-	          FROM   booking_view WHERE 1=1`
-	args := []any{}
-	idx  := 1
+    query := `SELECT booking_id, guest_name, room_id, room_type,
+                     check_in, check_out, status, paid
+              FROM   booking_view
+              WHERE  1=1`
+    args := []any{}
+    idx  := 1
 
-	if !f.CheckIn.IsZero() {
-		query += fmt.Sprintf(" AND check_in >= $%d", idx)
-		args = append(args, f.CheckIn); idx++
-	}
-	if !f.CheckOut.IsZero() {
-		query += fmt.Sprintf(" AND check_out <= $%d", idx)
-		args = append(args, f.CheckOut); idx++
-	}
-	if f.RoomID != 0 {
-		query += fmt.Sprintf(" AND room_id = $%d", idx)
-		args = append(args, f.RoomID); idx++
-	}
-	if f.Status != "" {
-		query += fmt.Sprintf(" AND status = $%d", idx)
-		args = append(args, f.Status); idx++
-	}
+    if !f.CheckIn.IsZero() {
+        query += fmt.Sprintf(" AND check_in >= $%d", idx)
+        args = append(args, f.CheckIn); idx++
+    }
+    if !f.CheckOut.IsZero() {
+        query += fmt.Sprintf(" AND check_out <= $%d", idx)
+        args = append(args, f.CheckOut); idx++
+    }
+    if f.RoomID != 0 {
+        query += fmt.Sprintf(" AND room_id = $%d", idx)
+        args = append(args, f.RoomID); idx++
+    }
+    if f.Status != "" {
+        query += fmt.Sprintf(" AND status = $%d", idx)
+        args = append(args, f.Status); idx++
+    }
 
-	rows, err := db.Query(query, args...)
-	if err != nil { return nil, err }
-	defer rows.Close()
+    // Добавляем сортировку по убыванию ID — новые брони будут первыми
+    query += " ORDER BY booking_id DESC"
 
-	var list []BookingView
-	for rows.Next() {
-		var b BookingView
-		if err := rows.Scan(&b.BookingID, &b.GuestName, &b.RoomID, &b.RoomType,
-			&b.CheckIn, &b.CheckOut, &b.Status, &b.Paid); err != nil {
-			return nil, err
-		}
-		list = append(list, b)
-	}
-	return list, rows.Err()
+    rows, err := db.Query(query, args...)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    var list []BookingView
+    for rows.Next() {
+        var b BookingView
+        if err := rows.Scan(
+            &b.BookingID,
+            &b.GuestName,
+            &b.RoomID,
+            &b.RoomType,
+            &b.CheckIn,
+            &b.CheckOut,
+            &b.Status,
+            &b.Paid,
+        ); err != nil {
+            return nil, err
+        }
+        list = append(list, b)
+    }
+    return list, rows.Err()
 }
